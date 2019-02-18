@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.github.axet.androidlibrary.widgets.EqualLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recording_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar_all"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="?attr/toolbar_icon_bg"
+            android:clickable="false"
+            android:gravity="center"
+            android:tint="?attr/colorAccent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/toolbar_icon_bg"
+            android:drawableLeft="@drawable/ic_format_list_bulleted_black_24dp"
+            android:drawablePadding="8dp"
+            android:drawableTint="?attr/colorAccent"
+            android:gravity="start|center"
+            android:padding="8dp"
+            android:text="@string/tolbar_all"
+            android:textColor="#000" />
+
+    </FrameLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar_stars"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:gravity="center"
+            android:tint="?attr/colorAccent" />
+
+        <TextView
+            android:text="@string/tolbar_stars"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/toolbar_icon_bg"
+            android:gravity="start|center"
+            android:drawablePadding="8dp"
+            android:textColor="#000"
+            android:padding="8dp"
+            android:drawableTint="?attr/colorAccent"
+            android:drawableLeft="@drawable/ic_star_black_24dp"/>
+
+    </FrameLayout>
+
+</com.github.axet.androidlibrary.widgets.EqualLinearLayout>

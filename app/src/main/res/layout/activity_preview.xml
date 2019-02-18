@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_save"
+        style="@style/TextViewGrayBottomLight"
+        android:drawableLeft="@drawable/ic_save_black_24dp"
+        android:text="Lưu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_edit"
+        style="@style/TextViewGrayBottomLight"
+        android:drawableLeft="@drawable/ic_edit_black_24dp"
+        android:text="Chỉnh sửa tên cuộc gọi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_save" />
+
+    <TextView
+        android:id="@+id/tv_delete"
+        style="@style/TextViewGrayBottomLight"
+        android:drawableLeft="@drawable/ic_delete_black_24dp"
+        android:text="Xóa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_edit" />
+
+    <TextView
+        android:id="@+id/tv_share"
+        style="@style/TextViewGrayBottomLight"
+        android:drawableLeft="@drawable/ic_share_black_24dp"
+        android:text="Chia sẻ"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_delete" />
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_delete">
+        <SeekBar
+            android:id="@+id/sb_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/player"/>
+        <LinearLayout
+            android:gravity="center"
+            android:id="@+id/player"
+            layout="@layout/recording_players"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="?attr/colorButtonNormal"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp">
+
+            <ImageView
+                android:id="@+id/img_avt"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/ic_mic_24dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="recording"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:text="11:00"
+                    android:textColor="@color/black"
+                    android:padding="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="1s"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/btn_play"
+                android:padding="8dp"
+                android:src="@drawable/ic_play_arrow_black_24dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
