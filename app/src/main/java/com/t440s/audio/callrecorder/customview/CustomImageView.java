@@ -2,7 +2,9 @@ package com.t440s.audio.callrecorder.customview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,18 +22,22 @@ public class CustomImageView extends RelativeLayout  {
     ImageButton iconImgV;
     TextView titleTv;
     String title;
+    RelativeLayout root;
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     public CustomImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.context = context;
         init();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     public CustomImageView(Context context) {
         super(context);
         init();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     public CustomImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
@@ -41,17 +47,21 @@ public class CustomImageView extends RelativeLayout  {
         init();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     public void init() {
         if (isInEditMode()) return;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View myView = inflater.inflate(R.layout.custom_imageview, null);
         iconImgV = (ImageButton) myView.findViewById(R.id.iconImgV);
+        root = (RelativeLayout) myView.findViewById(R.id.root);
         titleTv = (TextView) myView.findViewById(R.id.titleTv);
         titleTv.setText(title);
-        myView.setOnClickListener(new OnClickListener() {
+        iconImgV.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (onItemClickedListener != null) {
+                    onItemClickedListener.getText(title);
+                }
             }
         });
         addView(myView);
@@ -68,7 +78,13 @@ public class CustomImageView extends RelativeLayout  {
         return title;
     }
 
-    public interface getText{
+    private onItemClickedListener onItemClickedListener;
+
+    public void setOnItemClickedListener(onItemClickedListener onItemClickedListener){
+        this.onItemClickedListener = onItemClickedListener;
+    }
+
+    public interface onItemClickedListener{
         void getText(String text);
     }
 }
