@@ -109,7 +109,6 @@ public class RecordingService extends Service implements SharedPreferences.OnSha
         public MediaRecorderThread() {
             super("RecordingThread");
         }
-
         @Override
         public void run() {
             super.run();
@@ -117,7 +116,10 @@ public class RecordingService extends Service implements SharedPreferences.OnSha
     }
 
     public static void startService(Context context) {
-        OptimizationPreferenceCompat.startService(context, new Intent(context, RecordingService.class));
+        context.startService(new Intent(context, RecordingService.class));
+        //change start service libary
+
+//        OptimizationPreferenceCompat.startService(context, new Intent(context, RecordingService.class));
     }
 
     public static boolean isEnabled(Context context) {
@@ -296,7 +298,7 @@ public class RecordingService extends Service implements SharedPreferences.OnSha
         super.onCreate();
         Log.d(TAG, "onCreate");
 
-        optimization = new OptimizationPreferenceCompat.ServiceReceiver(this, getClass(), CallApplication.PREFERENCE_OPTIMIZATION) {
+        optimization = new OptimizationPreferenceCompat.ServiceReceiver(getApplicationContext(), getClass(), CallApplication.PREFERENCE_OPTIMIZATION) {
             @Override
             public void register() {
                 super.register();

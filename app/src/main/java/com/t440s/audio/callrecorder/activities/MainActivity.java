@@ -18,7 +18,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SwitchCompat;
@@ -32,6 +36,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,8 +51,14 @@ import com.t440s.audio.callrecorder.app.Recordings;
 import com.t440s.audio.callrecorder.app.Storage;
 import com.t440s.audio.callrecorder.services.RecordingService;
 import com.t440s.audio.callrecorder.widgets.MixerPathsPreferenceCompat;
+import com.t440s.audio.callrecorder.widgets.SharedPreferencesManager;
 
-public class MainActivity extends AppCompatThemeActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
+
+public class MainActivity extends AppCompatThemeActivity implements SharedPreferences.OnSharedPreferenceChangeListener, NavigationView.OnNavigationItemSelectedListener {
     public final static String TAG = MainActivity.class.getSimpleName();
 
     public static String SHOW_PROGRESS = MainActivity.class.getCanonicalName() + ".SHOW_PROGRESS";
@@ -73,13 +84,23 @@ public class MainActivity extends AppCompatThemeActivity implements SharedPrefer
     int encoding;
     String phone;
     long sec;
-
     MenuItem resumeCall;
-
     Recordings recordings;
     Storage storage;
     ListView list;
     Handler handler = new Handler();
+
+    @BindView(R.id.nav_switch_record)
+    Switch nav_record;
+    @BindView(R.id.nav_lockpass)
+    Switch nav_lockpass;
+    @BindView(R.id.nav_privacy)
+    TextView nav_privacy;
+    @BindView(R.id.nav_info)
+    TextView nav_info;
+    @BindView(R.id.nav_exit)
+    TextView nav_exit;
+
 
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -101,70 +122,26 @@ public class MainActivity extends AppCompatThemeActivity implements SharedPrefer
         }
     };
 
-    public static void showProgress(Context context, boolean show, String phone, long sec, Boolean recording) {
-        Intent intent = new Intent(SHOW_PROGRESS);
-        intent.putExtra("show", show);
-        intent.putExtra("recording", recording);
-        intent.putExtra("sec", sec);
-        intent.putExtra("phone", phone);
-        context.sendBroadcast(intent);
-    }
-
-    public static void setProgress(Context context, int p) {
-        Intent intent = new Intent(SET_PROGRESS);
-        intent.putExtra("set", p);
-        context.sendBroadcast(intent);
-    }
-
-    public static void last(Context context) {
-        Intent intent = new Intent(SHOW_LAST);
-        context.sendBroadcast(intent);
-    }
-
-    public static void startActivity(Context context) {
-        Intent i = new Intent(context, MainActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        context.startActivity(i);
-    }
-
-    public static void setSolid(Drawable background, int color) {
-        if (background instanceof ShapeDrawable) {
-            ShapeDrawable shapeDrawable = (ShapeDrawable) background;
-            shapeDrawable.getPaint().setColor(color);
-        } else if (background instanceof GradientDrawable) {
-            GradientDrawable gradientDrawable = (GradientDrawable) background;
-            gradientDrawable.setColor(color);
-        } else if (background instanceof ColorDrawable) {
-            ColorDrawable colorDrawable = (ColorDrawable) background;
-            if (Build.VERSION.SDK_INT >= 11)
-                colorDrawable.setColor(color);
-        }
-    }
-
-    public static String join(String... args) {
-        StringBuilder bb = new StringBuilder();
-        for (int i = 1; i < args.length; i++) {
-            if (bb.length() != 0)
-                bb.append(args[0]);
-            bb.append(args[i]);
-        }
-        return bb.toString();
-    }
-
-    @Override
-    public int getAppTheme() {
-        return CallApplication.getTheme(this, R.style.RecThemeLight_NoActionBar, R.style.RecThemeDark_NoActionBar);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
+        ButterKnife.bind(this);
+
+
         if (OptimizationPreferenceCompat.needKillWarning(this, CallApplication.PREFERENCE_NEXT))
             OptimizationPreferenceCompat.buildKilledWarning(this, true, CallApplication.PREFERENCE_OPTIMIZATION).show();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         list = (ListView) findViewById(R.id.list);
         View empty = findViewById(R.id.empty_list);
@@ -177,9 +154,6 @@ public class MainActivity extends AppCompatThemeActivity implements SharedPrefer
         ff.addAction(SET_PROGRESS);
         ff.addAction(SHOW_LAST);
         registerReceiver(receiver, ff);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         recordings = new Recordings(this, list);
         list.setAdapter(recordings);
@@ -266,6 +240,71 @@ public class MainActivity extends AppCompatThemeActivity implements SharedPrefer
             });
             d.show();
         }
+        changeSwitch();
+    }
+
+    @OnClick(R.id.nav_exit)
+    void exit(){
+        System.exit(0);
+        finish();
+    }
+    
+    @OnClick(R.id.nav_info)
+    void info(){
+        Toast.makeText(this, "info", Toast.LENGTH_SHORT).show();
+        closeDrawer();
+    }
+    
+    @OnClick(R.id.nav_privacy)
+    void privacy(){
+        Toast.makeText(this, "Privacy", Toast.LENGTH_SHORT).show();
+        closeDrawer();
+    }
+
+    public void changeSwitch(){
+        boolean b = RecordingService.isEnabled(MainActivity.this);
+        boolean islock = SharedPreferencesManager.isLocked(MainActivity.this);
+        nav_record.setChecked(b);
+        nav_lockpass.setChecked(islock);
+        nav_lockpass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked==false){
+                    SharedPreferencesManager.setLocked(MainActivity.this,false);
+                } else{
+                    startActivity(new Intent(MainActivity.this,SetupPasswordActivity.class));
+                }
+            }
+        });
+
+        nav_record.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked==true && !Storage.permitted(MainActivity.this, PERMISSIONS, RESULT_CALL)) {
+
+                }
+                call(isChecked);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
@@ -295,7 +334,6 @@ public class MainActivity extends AppCompatThemeActivity implements SharedPrefer
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchView.clearFocus();
                 recordings.search(newText);
                 return false;
             }
@@ -313,12 +351,7 @@ public class MainActivity extends AppCompatThemeActivity implements SharedPrefer
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar base clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
@@ -359,13 +392,15 @@ public class MainActivity extends AppCompatThemeActivity implements SharedPrefer
         }
     }
 
+    void closeDrawer(){
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+    }
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
-
         invalidateOptionsMenu();
-
         try {
             storage.migrateLocalStorage();
         } catch (RuntimeException e) {
@@ -386,6 +421,63 @@ public class MainActivity extends AppCompatThemeActivity implements SharedPrefer
 
         updateHeader();
     }
+
+    public static void showProgress(Context context, boolean show, String phone, long sec, Boolean recording) {
+        Intent intent = new Intent(SHOW_PROGRESS);
+        intent.putExtra("show", show);
+        intent.putExtra("recording", recording);
+        intent.putExtra("sec", sec);
+        intent.putExtra("phone", phone);
+        context.sendBroadcast(intent);
+    }
+
+    public static void setProgress(Context context, int p) {
+        Intent intent = new Intent(SET_PROGRESS);
+        intent.putExtra("set", p);
+        context.sendBroadcast(intent);
+    }
+
+    public static void last(Context context) {
+        Intent intent = new Intent(SHOW_LAST);
+        context.sendBroadcast(intent);
+    }
+
+    public static void startActivity(Context context) {
+        Intent i = new Intent(context, MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        context.startActivity(i);
+    }
+
+    public static void setSolid(Drawable background, int color) {
+        if (background instanceof ShapeDrawable) {
+            ShapeDrawable shapeDrawable = (ShapeDrawable) background;
+            shapeDrawable.getPaint().setColor(color);
+        } else if (background instanceof GradientDrawable) {
+            GradientDrawable gradientDrawable = (GradientDrawable) background;
+            gradientDrawable.setColor(color);
+        } else if (background instanceof ColorDrawable) {
+            ColorDrawable colorDrawable = (ColorDrawable) background;
+            if (Build.VERSION.SDK_INT >= 11)
+                colorDrawable.setColor(color);
+        }
+    }
+
+    public static String join(String... args) {
+        StringBuilder bb = new StringBuilder();
+        for (int i = 1; i < args.length; i++) {
+            if (bb.length() != 0)
+                bb.append(args[0]);
+            bb.append(args[i]);
+        }
+        return bb.toString();
+    }
+
+    @Override
+    public int getAppTheme() {
+        return CallApplication.getTheme(this, R.style.RecThemeLight_NoActionBar, R.style.RecThemeDark_NoActionBar);
+    }
+
 
     void last() {
         Runnable done = new Runnable() {
@@ -498,7 +590,6 @@ public class MainActivity extends AppCompatThemeActivity implements SharedPrefer
     public void onStop() {
         super.onStop();
     }
-
 
 
     void updateHeader() {

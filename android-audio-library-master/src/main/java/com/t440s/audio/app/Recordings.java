@@ -83,10 +83,8 @@ public class Recordings extends ArrayAdapter<Storage.RecordingUri> implements Ab
     protected ViewGroup toolbar;
     protected View toolbar_a;
     protected View toolbar_s;
-    protected View toolbar_n;
-    protected View toolbar_d;
     protected boolean toolbarFilterAll = true; // all or stars
-    protected boolean toolbarSortName = true; // name or date
+    protected boolean toolbarSortName = false; // name or date
 
     PhoneStateChangeListener pscl;
 
@@ -339,10 +337,7 @@ public class Recordings extends ArrayAdapter<Storage.RecordingUri> implements Ab
 
     public void sort() {
         Comparator<Storage.RecordingUri> sort;
-        if (toolbarSortName)
-            sort = new SortName();
-        else
-            sort = new SortDate();
+        sort = new SortDate();
         sort(Collections.reverseOrder(sort));
     }
 
@@ -433,13 +428,13 @@ public class Recordings extends ArrayAdapter<Storage.RecordingUri> implements Ab
         TextView size = (TextView) convertView.findViewById(R.id.recording_size);
         size.setText(MainApplication.formatSize(getContext(), f.size));
 
-        final View playerBase = convertView.findViewById(R.id.recording_player);
-        playerBase.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-
+//        final View playerBase = convertView.findViewById(R.id.recording_player);
+//        playerBase.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//            }
+//        });
+//
         final Runnable delete = new Runnable() {
             @Override
             public void run() {
@@ -473,7 +468,7 @@ public class Recordings extends ArrayAdapter<Storage.RecordingUri> implements Ab
                 showDialog(builder);
             }
         };
-
+//
         final Runnable rename = new Runnable() {
             @Override
             public void run() {
@@ -495,93 +490,93 @@ public class Recordings extends ArrayAdapter<Storage.RecordingUri> implements Ab
             }
         };
 
-        if (selected == position) {
-            RecordingAnimation.apply(list, convertView, true, scrollState == SCROLL_STATE_IDLE && (int) convertView.getTag() == TYPE_COLLAPSED);
-            convertView.setTag(TYPE_EXPANDED);
-
-            updatePlayerText(convertView, f);
-
-            final View play = convertView.findViewById(R.id.recording_player_play);
-            play.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (player == null) {
-                        playerPlay(playerBase, f);
-                    } else if (player.isPlaying()) {
-                        playerPause(playerBase, f);
-                    } else {
-                        playerPlay(playerBase, f);
-                    }
-                }
-            });
-
-            final View edit = convertView.findViewById(R.id.recording_player_edit);
-            edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    rename.run();
-                }
-            });
-
-            final View share = convertView.findViewById(R.id.recording_player_share);
-            share.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String name = "Recordings";
-                    try {
-                        PackageManager pm = getContext().getPackageManager();
-                        ApplicationInfo info = pm.getApplicationInfo(getContext().getPackageName(), 0);
-                        name = info.loadLabel(pm).toString();
-                    } catch (PackageManager.NameNotFoundException e) {
-                        ;
-                    }
-
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType(Storage.getTypeByName(f.name));
-                    intent.putExtra(Intent.EXTRA_EMAIL, "");
-                    intent.putExtra(Intent.EXTRA_STREAM, StorageProvider.getProvider().share(f.uri));
-                    intent.putExtra(Intent.EXTRA_SUBJECT, f.name);
-                    intent.putExtra(Intent.EXTRA_TEXT, getContext().getString(R.string.shared_via, name));
-                    PopupShareActionProvider.show(getContext(), share, intent);
-                }
-            });
-
-            KeyguardManager myKM = (KeyguardManager) getContext().getSystemService(Context.KEYGUARD_SERVICE);
-            final boolean locked = myKM.inKeyguardRestrictedInputMode();
-
-            ImageView trash = (ImageView) convertView.findViewById(R.id.recording_player_trash);
-            if (locked) {
-                trash.setOnClickListener(null);
-                trash.setClickable(true);
-                trash.setColorFilter(Color.GRAY);
-            } else {
-                trash.setColorFilter(ThemeUtils.getThemeColor(getContext(), R.attr.colorAccent));
-                trash.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        delete.run();
-                    }
-                });
-            }
-
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    select(-1);
-                }
-            });
-        } else {
-            RecordingAnimation.apply(list, convertView, false, scrollState == SCROLL_STATE_IDLE && (int) convertView.getTag() == TYPE_EXPANDED);
-            convertView.setTag(TYPE_COLLAPSED);
-
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    /*thay đổi*/
-//                    select(position);
-                }
-            });
-        }
+//        if (selected == position) {
+//            RecordingAnimation.apply(list, convertView, true, scrollState == SCROLL_STATE_IDLE && (int) convertView.getTag() == TYPE_COLLAPSED);
+//            convertView.setTag(TYPE_EXPANDED);
+//
+//            updatePlayerText(convertView, f);
+//
+//            final View play = convertView.findViewById(R.id.recording_player_play);
+//            play.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (player == null) {
+//                        playerPlay(playerBase, f);
+//                    } else if (player.isPlaying()) {
+//                        playerPause(playerBase, f);
+//                    } else {
+//                        playerPlay(playerBase, f);
+//                    }
+//                }
+//            });
+//
+//            final View edit = convertView.findViewById(R.id.recording_player_edit);
+//            edit.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    rename.run();
+//                }
+//            });
+//
+//            final View share = convertView.findViewById(R.id.recording_player_share);
+//            share.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    String name = "Recordings";
+//                    try {
+//                        PackageManager pm = getContext().getPackageManager();
+//                        ApplicationInfo info = pm.getApplicationInfo(getContext().getPackageName(), 0);
+//                        name = info.loadLabel(pm).toString();
+//                    } catch (PackageManager.NameNotFoundException e) {
+//
+//                    }
+//
+//                    Intent intent = new Intent(Intent.ACTION_SEND);
+//                    intent.setType(Storage.getTypeByName(f.name));
+//                    intent.putExtra(Intent.EXTRA_EMAIL, "");
+//                    intent.putExtra(Intent.EXTRA_STREAM, StorageProvider.getProvider().share(f.uri));
+//                    intent.putExtra(Intent.EXTRA_SUBJECT, f.name);
+//                    intent.putExtra(Intent.EXTRA_TEXT, getContext().getString(R.string.shared_via, name));
+//                    PopupShareActionProvider.show(getContext(), share, intent);
+//                }
+//            });
+//
+//            KeyguardManager myKM = (KeyguardManager) getContext().getSystemService(Context.KEYGUARD_SERVICE);
+//            final boolean locked = myKM.inKeyguardRestrictedInputMode();
+//
+//            ImageView trash = (ImageView) convertView.findViewById(R.id.recording_player_trash);
+//            if (locked) {
+//                trash.setOnClickListener(null);
+//                trash.setClickable(true);
+//                trash.setColorFilter(Color.GRAY);
+//            } else {
+//                trash.setColorFilter(ThemeUtils.getThemeColor(getContext(), R.attr.colorAccent));
+//                trash.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        delete.run();
+//                    }
+//                });
+//            }
+//
+//            convertView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    select(-1);
+//                }
+//            });
+//        } else {
+//            RecordingAnimation.apply(list, convertView, false, scrollState == SCROLL_STATE_IDLE && (int) convertView.getTag() == TYPE_EXPANDED);
+//            convertView.setTag(TYPE_COLLAPSED);
+//
+//            convertView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    /*thay đổi*/
+////                    select(position);
+//                }
+//            });
+//        }
 
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

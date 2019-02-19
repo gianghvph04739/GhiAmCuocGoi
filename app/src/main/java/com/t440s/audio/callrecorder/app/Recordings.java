@@ -98,6 +98,8 @@ public class Recordings extends com.t440s.audio.app.Recordings {
                     break;
             }
         }
+        final boolean starb = MainApplication.getStar(getContext(), f.uri);
+
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,6 +109,7 @@ public class Recordings extends com.t440s.audio.app.Recordings {
                 intent.putExtra("duration", MainApplication.formatDuration(getContext(), f.duration));
                 intent.putExtra("size", MainApplication.formatSize(getContext(), f.size));
                 intent.putExtra("last", MainApplication.SIMPLE.format(new Date(f.last)));
+                intent.putExtra("star",starb);
                 getContext().startActivity(intent);
             }
         });

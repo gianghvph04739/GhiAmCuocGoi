@@ -98,6 +98,6 @@
             </LinearLayout>
         </com.github.axet.androidlibrary.widgets.EqualLinearLayout>
 
-        <include layout="@layout/recording_player" />
+        <!--<include layout="@layout/recording_player" />-->
     </LinearLayout>
 </FrameLayout>

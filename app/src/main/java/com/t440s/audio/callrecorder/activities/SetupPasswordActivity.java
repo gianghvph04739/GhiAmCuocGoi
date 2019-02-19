@@ -15,9 +15,7 @@ import com.t440s.audio.callrecorder.R;
 import com.t440s.audio.callrecorder.customview.CustomImageView;
 import com.t440s.audio.callrecorder.widgets.SharedPreferencesManager;
 
-import java.util.concurrent.locks.Lock;
-
-public class LockedActivity extends AppCompatActivity {
+public class SetupPasswordActivity extends AppCompatActivity {
     private CustomImageView mNumber1;
     private ImageView m1Pass;
     private ImageView m2Pass;
@@ -33,10 +31,14 @@ public class LockedActivity extends AppCompatActivity {
     private CustomImageView mNumber9;
     private CustomImageView mNumber0;
     private TextView mDelete;
-
     private String pass = "";
     private int touchCount = 0;
-    private String passSave;
+    private String pass1 = "";
+    private String pass2 = "";
+    private int setUpCount = 0;
+
+    private SharedPreferencesManager sharePref;
+    private TextView mStatusTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +46,10 @@ public class LockedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_locked);
         initView();
         getSupportActionBar().hide();
-        passSave = SharedPreferencesManager.getPassword(LockedActivity.this);
-        boolean isLock = SharedPreferencesManager.isLocked(LockedActivity.this);
-        if(isLock == true){
 
-        }
-        TelephonyManager manager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        String carrierName = manager.getNetworkOperatorName();
-        Toast.makeText(this, carrierName, Toast.LENGTH_SHORT).show();
+        mStatusTv.setText("Mật khẩu mới");
+        mDelete.setText("Đặt lại");
+
         mNumber0.setOnItemClickedListener(new CustomImageView.onItemClickedListener() {
             @Override
             public void getText(String text) {
@@ -124,52 +122,91 @@ public class LockedActivity extends AppCompatActivity {
         mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                delete();
+                deleteAll();
             }
         });
     }
 
     public void touchNumber(String text) {
-        touchCount++;
-        pass += text;
-        if (touchCount == 1)
-            m1Pass.setVisibility(View.VISIBLE);
-        if (touchCount == 2)
-            m2Pass.setVisibility(View.VISIBLE);
-        if (touchCount == 3)
-            m3Pass.setVisibility(View.VISIBLE);
-        if (touchCount == 4) {
-            m4Pass.setVisibility(View.VISIBLE);
-            touchCount = 0;
-            new CountDownTimer(150, 150) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                }
-                @Override
-                public void onFinish() {
-                    if (pass.equals(passSave)) {
-                        Intent i = new Intent(LockedActivity.this, MainActivity.class);
-                        delete();
-                        startActivity(i);
-                        finish();
-                    } else {
-                        Toast.makeText(LockedActivity.this, "Sai mật khẩu", Toast.LENGTH_SHORT).show();
-                        delete();
+        if (setUpCount == 0) {
+            touchCount++;
+            pass1 += text;
+            if (touchCount == 1)
+                m1Pass.setVisibility(View.VISIBLE);
+            if (touchCount == 2)
+                m2Pass.setVisibility(View.VISIBLE);
+            if (touchCount == 3)
+                m3Pass.setVisibility(View.VISIBLE);
+            if (touchCount == 4) {
+                m4Pass.setVisibility(View.VISIBLE);
+                touchCount = 0;
+                touchCount = 0;
+                new CountDownTimer(150, 150) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
                     }
-                }
-            }.start();
+                    @Override
+                    public void onFinish() {
+                        setUpCount++;
+                        delete();
+                        mStatusTv.setText("Nhập lại mật khẩu mới");
+                    }
+                }.start();
 
 
+            }
+        }
+        if (setUpCount == 1) {
+            touchCount++;
+            pass2 += text;
+            if (touchCount == 1)
+                m1Pass.setVisibility(View.VISIBLE);
+            if (touchCount == 2)
+                m2Pass.setVisibility(View.VISIBLE);
+            if (touchCount == 3)
+                m3Pass.setVisibility(View.VISIBLE);
+            if (touchCount == 4) {
+                touchCount = 0;
+                m4Pass.setVisibility(View.VISIBLE);
+
+                new CountDownTimer(150, 150) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    @Override
+                    public void onFinish() {
+                        if (pass2.equals(pass1)) {
+                            SharedPreferencesManager.setPassword(SetupPasswordActivity.this,pass2);
+                            SharedPreferencesManager.setLocked(SetupPasswordActivity.this,true);
+                            Toast.makeText(SetupPasswordActivity.this, "Đặt mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(SetupPasswordActivity.this,LockedActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(SetupPasswordActivity.this, "Mật khẩu nhập lại không đúng\nVui lòng thử lại.", Toast.LENGTH_SHORT).show();
+                        }
+                        deleteAll();
+                        mStatusTv.setText("Mật khẩu mới");
+                    }
+                }.start();
+            }
         }
     }
 
     public void delete() {
-        touchCount = 0;
-        pass = "";
         m1Pass.setVisibility(View.GONE);
         m2Pass.setVisibility(View.GONE);
         m3Pass.setVisibility(View.GONE);
         m4Pass.setVisibility(View.GONE);
+
+    }
+
+    public void deleteAll(){
+        pass1 = "";
+        touchCount = 0;
+        setUpCount = 0;
+        pass2 = "";
+        mStatusTv.setText("Nhập mật khẩu mới");
+        delete();
     }
 
     private void initView() {
@@ -188,6 +225,7 @@ public class LockedActivity extends AppCompatActivity {
         mNumber9 = (CustomImageView) findViewById(R.id.number9);
         mNumber0 = (CustomImageView) findViewById(R.id.number0);
         mDelete = (TextView) findViewById(R.id.delete);
+        mStatusTv = (TextView) findViewById(R.id.tv_status);
     }
 
 }

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <ImageButton
         android:id="@+id/iconImgV"
         android:layout_width="100dp"
@@ -20,9 +19,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Title"
+        android:text="3"
         android:textStyle="bold"
         android:textColor="@color/white"
-        android:textSize="26sp" />
+        android:textSize="33sp" />
 
 </RelativeLayout>

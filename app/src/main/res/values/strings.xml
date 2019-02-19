@@ -114,4 +114,8 @@
     <string name="delete_1day" translatable="false">1day</string>
     <string name="deletefinal">Đã xóa thành công</string>
     <string name="enter_passcode">Enter password</string>
+    <string name="detail_record">Chi tiết ghi âm</string>
+    <string name="navigation_drawer_open">open</string>
+    <string name="navigation_drawer_close">close</string>
+    <string name="protected_text">Đặt mật khẩu bảo mật</string>
 </resources>

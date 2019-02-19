@@ -233,7 +233,7 @@ public class RecentCallActivity extends AppCompatActivity {
         if (!old.equals(n)) {
             String s = String.format("%s.%s", n, ext);
             Storage.rename(this, uri, s);
-            MainActivity.last(this);
+//            MainActivity.last(this);
         }
     }
 

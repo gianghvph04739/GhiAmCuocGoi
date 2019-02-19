@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_marginTop="170dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <Switch
+        android:id="@+id/nav_switch_record"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@drawable/ic_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name" />
+
+    <Switch
+        android:id="@+id/nav_lockpass"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@drawable/ic_lock"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/protected_text" />
+
+    <TextView
+        android:id="@+id/nav_privacy"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@drawable/ic_collections"
+        android:textColor="@color/black"
+        android:text="Điều khoản dịch vụ"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/nav_info"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@drawable/ic_info"
+        android:textColor="@color/black"
+        android:text="Thông tin phiên bản"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/nav_exit"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@drawable/ic_exit"
+        android:textColor="@color/black"
+        android:text="Thoát"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
