@@ -7,7 +7,7 @@
     android:background="@drawable/bg_locked"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="com.t440s.audio.callrecorder.activities.LockedActivity">
+    tools:context="com.t440s.call.activities.LockedActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,7 +71,7 @@
         android:layout_centerInParent="true"
         android:gravity="center">
 
-        <com.t440s.audio.callrecorder.customview.CustomImageView
+        <com.t440s.call.customview.CustomImageView
             android:id="@+id/number1"
             android:layout_width="75dp"
             android:layout_height="75dp"
@@ -79,7 +79,7 @@
             android:gravity="center"
             app:text="1" />
 
-        <com.t440s.audio.callrecorder.customview.CustomImageView
+        <com.t440s.call.customview.CustomImageView
             android:id="@+id/number2"
             android:layout_width="75dp"
             android:layout_height="75dp"
@@ -87,7 +87,7 @@
             android:gravity="center"
             app:text="2" />
 
-        <com.t440s.audio.callrecorder.customview.CustomImageView
+        <com.t440s.call.customview.CustomImageView
             android:id="@+id/number3"
             android:layout_width="75dp"
             android:layout_height="75dp"
@@ -102,7 +102,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center">
 
-        <com.t440s.audio.callrecorder.customview.CustomImageView
+        <com.t440s.call.customview.CustomImageView
             android:id="@+id/number4"
             android:layout_width="75dp"
             android:layout_height="75dp"
@@ -110,7 +110,7 @@
             android:gravity="center"
             app:text="4" />
 
-        <com.t440s.audio.callrecorder.customview.CustomImageView
+        <com.t440s.call.customview.CustomImageView
             android:id="@+id/number5"
             android:layout_width="75dp"
             android:layout_height="75dp"
@@ -118,7 +118,7 @@
             android:gravity="center"
             app:text="5" />
 
-        <com.t440s.audio.callrecorder.customview.CustomImageView
+        <com.t440s.call.customview.CustomImageView
             android:id="@+id/number6"
             android:layout_width="75dp"
             android:layout_height="75dp"
@@ -133,7 +133,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center">
 
-        <com.t440s.audio.callrecorder.customview.CustomImageView
+        <com.t440s.call.customview.CustomImageView
             android:id="@+id/number7"
             android:layout_width="75dp"
             android:layout_height="75dp"
@@ -141,7 +141,7 @@
             android:gravity="center"
             app:text="7" />
 
-        <com.t440s.audio.callrecorder.customview.CustomImageView
+        <com.t440s.call.customview.CustomImageView
             android:id="@+id/number8"
             android:layout_width="75dp"
             android:layout_height="75dp"
@@ -149,7 +149,7 @@
             android:gravity="center"
             app:text="8" />
 
-        <com.t440s.audio.callrecorder.customview.CustomImageView
+        <com.t440s.call.customview.CustomImageView
             android:id="@+id/number9"
             android:layout_width="75dp"
             android:layout_height="75dp"
@@ -171,7 +171,7 @@
             android:background="@android:color/transparent"
             android:gravity="center" />
 
-        <com.t440s.audio.callrecorder.customview.CustomImageView
+        <com.t440s.call.customview.CustomImageView
             android:id="@+id/number0"
             android:layout_width="75dp"
             android:layout_height="75dp"

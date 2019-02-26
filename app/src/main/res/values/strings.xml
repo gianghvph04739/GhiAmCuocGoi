@@ -118,4 +118,9 @@
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
     <string name="protected_text">Đặt mật khẩu bảo mật</string>
+    <string name="turn_on">Bật/tắt ghi âm</string>
+
+    <string name="menu_sinstall"> Cài đặt </string>
+    <string name="device_description"> Tắt nút Buộc dừng bằng API Trình quản lý chính sách thiết bị </string>
+    <string name="device_admin_label"> Quản trị viên thiết bị </string>
 </resources>

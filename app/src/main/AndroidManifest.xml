@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.t440s.audio.callrecorder"
+    package="com.t440s.call"
     android:installLocation="auto">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -16,24 +16,28 @@
         android:name="android.permission.CAPTURE_AUDIO_OUTPUT"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.STORAGE" />
 
     <application
         android:name=".app.CallApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:sharedUserId="android.uid.system"
         android:supportsRtl="true"
         android:theme="@style/RecThemeLight">
-        <activity android:name=".activities.LockedActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+        <activity android:name=".activities.StartActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity android:name=".activities.LockedActivity" />
         <activity android:name=".activities.PreviewActivity" />
-        <activity android:name=".activities.SetupPasswordActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.SetupPasswordActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".services.RecordingService" />
 
@@ -69,11 +73,12 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".activities.RecentCallActivity"
@@ -86,9 +91,25 @@
 
         <provider
             android:name="com.github.axet.androidlibrary.services.StorageProvider"
-            android:authorities="com.github.axet.callrecorder"
+            android:authorities="com.t440s.call"
             android:exported="false"
             android:grantUriPermissions="true" />
+
+        <receiver
+            android:name=".app.DeviceAdminDemo"
+            android:description="@string/device_description"
+            android:label="@string/device_admin_label"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/my_admin" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

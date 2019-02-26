@@ -28,6 +28,18 @@
         android:text="@string/protected_text" />
 
     <TextView
+        android:id="@+id/nav_setting"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@drawable/ic_settings"
+        android:textColor="@color/black"
+        android:text="Cài đặt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
         android:id="@+id/nav_privacy"
         android:padding="16dp"
         android:textSize="16sp"

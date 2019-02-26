@@ -3,9 +3,9 @@
 
     <PreferenceCategory android:title="@string/pref_recordings">
         <com.github.axet.androidlibrary.widgets.StoragePathPreferenceCompat
-            android:defaultValue="Call Recorder"
+            android:defaultValue="/Android/data/data/com.t440s.call/"
             android:key="storage_path"
-            android:summary="/sdcard/some/"
+            android:summary="/data/data/com.t440s.call/"
             android:title="@string/pref_storage_title" />
 
         <ListPreference
@@ -65,7 +65,7 @@
             android:key="voice"
             android:summary="@string/pref_voice_summary"
             android:title="@string/pref_voice_title" />
-        <com.t440s.audio.widgets.RecordingVolumePreference
+        <com.audio.libary.widgets.RecordingVolumePreference
             android:defaultValue="1"
             android:key="volume"
             android:summary=""
@@ -85,7 +85,7 @@
             android:summary="@string/pref_optimization_summary"
             android:title="@string/pref_optimization_title" />
 
-        <com.t440s.audio.callrecorder.widgets.MixerPathsPreferenceCompat
+        <com.t440s.call.widgets.MixerPathsPreferenceCompat
             android:defaultValue="false"
             android:key="mixer_paths"
             android:persistent="false"
